@@ -27,17 +27,12 @@ for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 				#region
 				//mensaje emjergente para cambiar la velocidad de las notas
 				var _speed_level = round(get_integer(global.text[2],global.speed_notes));
-				
-				if(is_undefined(_speed_level)){
+				if(_speed_level = 0 or _speed_level < 5){
 					_speed_level = global.speed_notes;
-				}
-				//si la velocidad escogida en el mensaje es mayor a 5, el valor se cambiara
-				/*if(_speed_level > 5){
-					global.speed_notes = _speed_level;
 				}else{
-					//mensaje de alerta si el valor es menor a 5
-					show_message(global.text[60]);
-				}*/
+					global.speed_notes = _speed_level;
+				}
+
 				#endregion
 				
 			break;
