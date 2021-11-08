@@ -13,6 +13,7 @@
 	
 #endregion
 
+
 for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 
 	
@@ -42,6 +43,7 @@ for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 					
 					//cambia el valor actual del nivel por el nuevo valor escrito por el usuario
 					global.speed_notes = _speed_level;
+					save_game(true);
 				}
 
 				#endregion
@@ -64,13 +66,13 @@ for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 					
 					#region //contenido de los creditos
 					
-					file_text_write_string(_txt,"Music:");
+					file_text_write_string(_txt,"Music -");
 					file_text_writeln(_txt);
-					file_text_write_string(_txt,"Art:");
+					file_text_write_string(_txt,"Art -");
 					file_text_writeln(_txt);
-					file_text_write_string(_txt,"Background:");
+					file_text_write_string(_txt,"Background - ");
 					file_text_writeln(_txt);
-					file_text_write_string(_txt,"Notes:");
+					file_text_write_string(_txt,"Notes - ");
 					file_text_close(_txt);
 					
 					#endregion
@@ -87,19 +89,98 @@ for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 			
 			case 2: //musica
 				
-				show_debug_message("cambio musica");
+				//si la cantidad de musica esta entre 1 y 3
+				if (global.cant_musics >= 1) and (global.cant_musics <= 3) {
+							
+					var _music_bg;
+					var cancel = false;
+					
+					//escoger el archivo de musica
+					_music_bg = get_open_filename("Music |*.ogg","music.ogg");
+					//en caso que se cancele la operacion finaliza la operacion
+					if (_music_bg = "") or (!file_exists(_music_bg)) { cancel = true; break; }
+					else{
+						
+						/*elimina la version actual de la musica para remplazarla con la version actual
+						seleccionada por el usuario
+						*/
+						file_delete(global.ruta + "0.ogg");
+						file_copy(_music_bg,global.ruta + "0.ogg");
+					}
+				}
 				
 			break;
 			
 			case 3: //audio enemigo
 				
-				show_debug_message("cambio audio enemigo");
-				
+				//si la cantidad de musica esta entre 1 y 3
+				if (global.cant_musics >= 1) and (global.cant_musics <= 3) {
+							
+					var _enemy_vocal;
+					var cancel = false;
+					
+					//escoger el archivo vocal del enemigo
+					_enemy_vocal = get_open_filename("Enemy_vocal |*.ogg","enemy_vocal.ogg");
+					//en caso que se cancele la operacion, finaliza la operacion.
+					if (_enemy_vocal = "") or (!file_exists(_enemy_vocal)) { cancel = true; break; }
+					else{
+						//elimina el archivo actual para luego ser remplazado por el nuevo
+						if(file_exists(global.ruta + "1.ogg")){
+							file_delete(global.ruta + "1.ogg");
+						}
+						/*verifica si la cantidad de musica es concorde con la cantidad de archivos,
+						en el caso contrario, cambiara la cantidad de musica y mostrara un aviso,
+						diciendole al player que el nivel se reiniciara al salir.
+						
+						esto solo sucedera si la cantidad de musica es = 1
+						*/
+						if(global.cant_musics = 1){
+							global.cant_musics = 2;
+							global.music_change = true;
+							show_message(global.text[61]);
+							save_game(true);
+						}
+						file_copy(_enemy_vocal,global.ruta + "1.ogg");
+					}
+				}	
 			break;
-			
+
 			case 4: //audio jugador
 			
-				show_debug_message("cambio audio jugador");
+				//funcion redundante que hace lo mismo que el caso 3...
+			
+				//si la cantidad de musica esta entre 1 y 3
+				if (global.cant_musics >= 1) and (global.cant_musics <= 3) {
+							
+					var _player_vocal;
+					var cancel = false;
+					
+					//escoger el archivo vocal del player.
+					_player_vocal = get_open_filename("player_vocal |*.ogg","player_vocal.ogg");
+					//en caso que se cancele la operacion, finaliza la operacion.
+					if (_player_vocal = "") or (!file_exists(_player_vocal)) { cancel = true; break; }
+					else{
+						//elimina el archivo actual para luego ser remplazado por el nuevo
+						if(file_exists(global.ruta + "2.ogg")){
+							file_delete(global.ruta + "2.ogg");
+						}
+						
+						/*verifica si la cantidad de musica es concorde con la cantidad de archivos,
+						en el caso contrario, cambiara la cantidad de musica y mostrara un aviso,
+						diciendole al player que el nivel se reiniciara al salir.
+						
+						esto solo sucedera si la cantidad de musica es = 2
+						*/
+						
+						if(global.cant_musics = 2){
+							global.cant_musics = 3;
+							global.music_change = true;
+							show_message(global.text[61]);
+							save_game(true);
+						}
+						file_copy(_player_vocal,global.ruta + "2.ogg");
+					}
+				}
 				
 			break;
 			
@@ -122,58 +203,8 @@ for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 				
 			break;
 			
-			case 6: 
-				#region debug feo
-				
-				show_debug_message("");
-				show_debug_message("===========debug feo===========");
-				show_debug_message("");
-				
-				//notes
-				show_debug_message("[notes]");
-				show_debug_message(global.notes);
-				//vel notes
-				show_debug_message("[vel notes]");
-				show_debug_message(global.speed_notes);
-				//player dat skin
-				show_debug_message("[player dat skin]");
-				show_debug_message(global.data_pos_player);
-				//enemy data skin
-				show_debug_message("[enemy data skin]");
-				show_debug_message(global.data_pos_enemy);
-				//player time anim
-				show_debug_message("[player time anim]");
-				
-				//enemy time anim
-				show_debug_message("[enemy time anim]");
-				
-				//player num images
-				show_debug_message("[player num images]");
-				show_debug_message(global.player_sprite_nums);
-				//enemy num images
-				show_debug_message("[enemy num images]");
-				show_debug_message(global.enemy_sprite_nums);
-				//music num
-				show_debug_message("[music num]");
-				show_debug_message(global.cant_musics);
-				//camera notes
-				show_debug_message("[camera notes]");
-				show_debug_message(global.notas_cam);
-				//camera pos
-				show_debug_message("[camera pos]");
-				show_debug_message(global.points_cam);
-				
-				show_debug_message("");
-				show_debug_message("===============================");
-				
-				#endregion
-			break;
-			
 			default:
 			break;
-			
 		}
-		
 	}
-	
 }

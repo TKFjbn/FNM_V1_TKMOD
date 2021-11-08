@@ -60,6 +60,7 @@ if (os_get_language() = "es") {
 	global.text[59] = "";
 	
 	global.text[60] = "La velocidad debe ser mayor a 5";
+	global.text[61] = "el juego se reiniciará cuando regrese al menú";
 } else {
 	global.text[0] = "Insert your level's name.";
 	global.text[1] = "Put the number of songs (if there's more than one, the player's voice has to be the last one that you selected).";
@@ -99,6 +100,7 @@ if (os_get_language() = "es") {
 	global.text[59] = "";
 	
 	global.text[60] = "Velocity should be above 5";
+	global.text[61] = "The game will restart when you return to the menu"
 }
 
 switch (os_type) {

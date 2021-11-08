@@ -76,6 +76,9 @@ for (var i = 0; i < sprite_get_number(sprite_index);i++) {
 			
 			case 6: //salir.
 				save_game(false);
+				if(global.music_change = true){
+					game_restart();
+				}
 				transition_to(room_creation_menu,10);
 			break;
 			
